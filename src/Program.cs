@@ -1,3 +1,4 @@
+using Services.Users;
 using Middlewares;
 using Routes;
 
@@ -6,6 +7,8 @@ var host = Environment.GetEnvironmentVariable("APP_HOST") ?? "0.0.0.0";
 var port = Environment.GetEnvironmentVariable("APP_PORT") ?? "8080";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.WebHost.ConfigureKestrel(options => {
     options.Limits.MaxRequestBodySize = 2 * 1024 * 1024;
