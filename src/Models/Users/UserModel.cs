@@ -1,7 +1,7 @@
 namespace Models.Users;
 
 public record UserModel(
-    string? Id,
+    int? Id,
     string? FirstName,
     string? LastName,
     string? Username,
