@@ -1,7 +1,7 @@
 namespace Models.Users;
 
 public record UserDto(
-    string? Id,
+    int? Id,
     string? FirstName,
     string? LastName,
     string? Username
