@@ -1,0 +1,6 @@
+# C# dotnet
+[Bb]in/
+[Oo]bj/
+
+# VS Code
+*.sln

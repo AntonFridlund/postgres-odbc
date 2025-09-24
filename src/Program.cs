@@ -11,10 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.WebHost.ConfigureKestrel(options => {
-    options.Limits.MaxRequestBodySize = 2 * 1024 * 1024;
-    options.Limits.MaxRequestHeadersTotalSize = 64 * 1024;
-    options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(6);
-    options.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(60);
+  options.Limits.MaxRequestBodySize = 2 * 1024 * 1024;
+  options.Limits.MaxRequestHeadersTotalSize = 64 * 1024;
+  options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(6);
+  options.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(60);
 });
 
 builder.Logging.ClearProviders();
