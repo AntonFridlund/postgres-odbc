@@ -29,4 +29,21 @@ public class UserService : IUserService {
       );
     } else return null;
   }
+
+  public async Task<int> CreateUserAsync(UserModel user) {
+    using var pool = await Postgres.GetPoolAsync();
+    await using var cmd = pool.Connection.CreateCommand();
+    cmd.CommandText = @"
+      INSERT INTO user_data.users (id, first_name, last_name, user_name, password)
+      VALUES (?, ?, ?, ?, ?)
+      RETURNING id";
+    cmd.Parameters.Add(new() { OdbcType = OdbcType.Int, Value = user.Id });
+    cmd.Parameters.Add(new() { OdbcType = OdbcType.VarChar, Value = user.FirstName });
+    cmd.Parameters.Add(new() { OdbcType = OdbcType.VarChar, Value = user.LastName });
+    cmd.Parameters.Add(new() { OdbcType = OdbcType.VarChar, Value = user.Username });
+    cmd.Parameters.Add(new() { OdbcType = OdbcType.VarChar, Value = user.Password });
+
+    var result = await cmd.ExecuteScalarAsync();
+    return result is int id ? id : throw new Exception("User creation failed");
+  }
 }
