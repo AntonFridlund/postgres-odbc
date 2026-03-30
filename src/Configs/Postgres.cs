@@ -13,8 +13,8 @@ public static class Postgres {
     ["Port"] = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432",
     ["Server"] = Environment.GetEnvironmentVariable("DB_SERVER") ?? "pgdb",
     ["Database"] = Environment.GetEnvironmentVariable("DB_INSTANCE") ?? "postgres",
-    ["Username"] = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "liquibase",
-    ["Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "liquibase"
+    ["Username"] = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres",
+    ["Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "postgres"
   }.ConnectionString;
 
   public static async Task<Pooled> GetPoolAsync() {
