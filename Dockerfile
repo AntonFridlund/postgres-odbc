@@ -8,10 +8,13 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:9.0 AS final
 
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-    unixodbc=2.3.11-2+deb12u1 \
-    odbc-postgresql=1:13.02.0000-2+b1 \
-  && rm -rf /var/lib/apt/lists/*
+  unixodbc odbc-postgresql && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /app/publish/odbc-api /usr/local/bin/app
-WORKDIR /usr/local/bin/
-ENTRYPOINT ["app"]
+RUN odbcinst -q -d | grep -q "PostgreSQL Unicode" || exit 1
+
+RUN useradd -m appuser
+COPY --from=build --chown=appuser:appuser /app/publish/odbc-api /app/odbc-api
+WORKDIR /app
+USER appuser
+
+ENTRYPOINT ["./odbc-api"]

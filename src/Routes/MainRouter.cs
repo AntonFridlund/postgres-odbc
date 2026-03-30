@@ -2,8 +2,9 @@ using Routes.Api;
 
 namespace Routes;
 
-public static class MainRouter {
-  public static void Register(WebApplication app) {
-    ApiRouter.Register(app);
+public class MainRouter {
+  public void Register(WebApplication app) {
+    var apiRouter = new ApiRouter();
+    apiRouter.Register(app);
   }
 }
