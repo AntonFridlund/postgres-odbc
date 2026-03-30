@@ -10,11 +10,11 @@ public static class Postgres {
   private static readonly ConcurrentStack<OdbcConnection> Pool = new();
   private static readonly string ConnectionString = new OdbcConnectionStringBuilder {
     ["Driver"] = "PostgreSQL Unicode",
-    ["Port"] = Environment.GetEnvironmentVariable("DB_PORT"),
-    ["Server"] = Environment.GetEnvironmentVariable("DB_SERVER"),
-    ["Database"] = Environment.GetEnvironmentVariable("DB_INSTANCE"),
-    ["Username"] = Environment.GetEnvironmentVariable("DB_USERNAME"),
-    ["Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD")
+    ["Port"] = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432",
+    ["Server"] = Environment.GetEnvironmentVariable("DB_SERVER") ?? "pgdb",
+    ["Database"] = Environment.GetEnvironmentVariable("DB_INSTANCE") ?? "postgres",
+    ["Username"] = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres",
+    ["Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "postgres"
   }.ConnectionString;
 
   public static async Task<Pooled> GetPoolAsync() {
@@ -33,8 +33,7 @@ public static class Postgres {
     public readonly OdbcConnection Connection = connection;
     void IDisposable.Dispose() {
       if (Connection.State != ConnectionState.Open) Connection.Dispose();
-      else if (Pool.Count < MaxPool) Pool.Push(Connection);
-      else Connection.Dispose();
+      else Pool.Push(Connection);
       Queue.Release();
     }
   }
