@@ -7,7 +7,7 @@ public class UserModel {
   public required string Username { get; set; }
   public string? Password { get; set; }
 
-  public UserModel Normalize() {
+  public UserModel Transform() {
     FirstName = FirstName.Trim();
     LastName = LastName.Trim();
     Username = Username.Trim();

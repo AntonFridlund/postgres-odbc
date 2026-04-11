@@ -3,24 +3,20 @@ using Models.Users;
 
 namespace Controllers.Users;
 
-public class UserController(UserService userService) {
+public class UserController(IUserService userService) {
   public async Task<IResult> GetUserById(int id) {
     // Validate user request data
     if (id <= 0) return Results.BadRequest(new { Error = "Invalid user id" });
 
     // Try to fetch user by id
-    UserDto? user = await userService.GetUserByIdAsync(id);
+    var user = await userService.GetUserByIdAsync(id);
     if (user is null) return Results.NotFound(new { Error = "User not found" });
     else return Results.Ok(user);
   }
 
-  public async Task<IResult> CreateUser(HttpRequest req) {
-    // Read user request data
-    var user = await req.ReadFromJsonAsync<UserModel>();
-    if (user is null) return Results.BadRequest(new { Error = "Invalid request data" });
-
+  public async Task<IResult> CreateUser(UserModel user) {
     // Validate user request data
-    var error = user.Normalize().Validate();
+    var error = user.Transform().Validate();
     if (error is not null) return Results.BadRequest(new { Error = error });
 
     // Try to create user

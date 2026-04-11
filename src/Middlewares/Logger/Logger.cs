@@ -3,7 +3,7 @@ using System.Diagnostics;
 namespace Middlewares.Logger;
 
 public class Logger(RequestDelegate next) {
-  public async Task InvokeAsync(HttpContext context, LogQueue<LogEntry> logQueue) {
+  public async Task InvokeAsync(HttpContext context) {
     var timestamp = DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
     var logLevel = LogLevel.Information;
     var timer = Stopwatch.StartNew();
@@ -19,7 +19,7 @@ public class Logger(RequestDelegate next) {
       await context.Response.WriteAsJsonAsync(new { Error = "Internal Server Error" });
     }
     timer.Stop();
-    await logQueue.Writer.WriteAsync(
+    await LogQueue<LogEntry>.Writer.WriteAsync(
       new LogEntry(
         Timestamp: timestamp,
         LogLevel: logLevel.ToString(),
