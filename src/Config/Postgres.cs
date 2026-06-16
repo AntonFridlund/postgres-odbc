@@ -8,10 +8,10 @@ public static class Postgres {
         return new OdbcConnectionStringBuilder {
             ["Driver"] = "PostgreSQL Unicode",
             ["Port"] = Environment.GetEnvironmentVariable("PG_PORT") ?? "5432",
-            ["Server"] = Environment.GetEnvironmentVariable("PG_HOST") ?? "pgdb",
+            ["Server"] = Environment.GetEnvironmentVariable("PG_HOST") ?? "localhost",
             ["Database"] = Environment.GetEnvironmentVariable("PG_DATABASE") ?? "postgres",
-            ["Username"] = Environment.GetEnvironmentVariable("PG_USERNAME") ?? "liquibase",
-            ["Password"] = Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "liquibase"
+            ["Username"] = Environment.GetEnvironmentVariable("PG_USERNAME") ?? "postgres",
+            ["Password"] = Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "postgres"
         }.ConnectionString;
     }
 }
