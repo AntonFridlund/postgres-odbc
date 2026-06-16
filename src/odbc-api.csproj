@@ -2,23 +2,17 @@
 
   <PropertyGroup>
     <!-- Target and Build -->
-    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    
+    <Nullable>enable</Nullable>
+
     <!-- Publishing -->
     <SelfContained>true</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
-    
-    <!-- Trimming -->
-    <PublishTrimmed>false</PublishTrimmed>
 
     <!-- Optimizations -->
-    <RetainVM>false</RetainVM>
     <ServerGarbageCollection>true</ServerGarbageCollection>
-    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
 

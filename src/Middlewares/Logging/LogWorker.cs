@@ -1,10 +1,11 @@
 using System.Diagnostics;
 
-namespace Middlewares.Logger;
+namespace Middlewares.Logging;
 
-public class Logger(RequestDelegate next) {
+// Creates and queues log entries from incoming requests
+public class LogWorker(RequestDelegate next) {
   public async Task InvokeAsync(HttpContext context) {
-    var timestamp = DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+    var timestamp = DateTimeOffset.UtcNow;
     var logLevel = LogLevel.Information;
     var timer = Stopwatch.StartNew();
     string? errorMessage = null;

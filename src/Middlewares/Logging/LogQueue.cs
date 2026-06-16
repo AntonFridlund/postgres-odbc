@@ -2,8 +2,9 @@ using static System.Text.Json.Serialization.JsonIgnoreCondition;
 using System.Threading.Channels;
 using System.Text.Json;
 
-namespace Middlewares.Logger;
+namespace Middlewares.Logging;
 
+// Processes queued log entries
 public static class LogQueue<T> {
   private static readonly JsonSerializerOptions jsonOptions = new() { DefaultIgnoreCondition = WhenWritingNull };
   private static readonly BoundedChannelOptions channelOptions = new(100) { SingleReader = true };
@@ -13,7 +14,7 @@ public static class LogQueue<T> {
   public static async Task RunAsync() {
     await foreach (var entry in channel.Reader.ReadAllAsync()) {
       var json = JsonSerializer.Serialize(entry, jsonOptions);
-      await Console.Out.WriteLineAsync(json).ConfigureAwait(false);
+      await Console.Out.WriteLineAsync(json);
     }
   }
 }

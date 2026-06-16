@@ -1,7 +1,8 @@
 namespace Models.Users;
 
+// Represents incoming user data
 public class UserModel {
-  public int? Id { get; set; }
+  public long? Id { get; set; }
   public required string FirstName { get; set; }
   public required string LastName { get; set; }
   public required string Username { get; set; }
