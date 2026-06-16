@@ -1,7 +1,8 @@
-namespace Middlewares.Logger;
+namespace Middlewares.Logging;
 
+// Represents a request log
 public record LogEntry(
-  string Timestamp,
+  DateTimeOffset Timestamp,
   string LogLevel,
   string Method,
   string Path,
