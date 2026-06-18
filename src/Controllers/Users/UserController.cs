@@ -13,7 +13,7 @@ public class UserController(IUserService userService) {
   }
 
   public async Task<IResult> CreateUser(UserModel user) {
-    var error = user.Transform().Validate();
+    var error = UserValidation.Validate(user.Normalize());
     if (error is not null) return Results.BadRequest(new { Error = error });
     var id = await userService.CreateUserAsync(user);
     if (id is null) return Results.InternalServerError(new { Error = "Could not create user" });
