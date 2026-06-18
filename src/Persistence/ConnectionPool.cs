@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Data.Odbc;
 using System.Data;
+using Config.Database;
 
 namespace Persistence;
 
@@ -9,7 +10,7 @@ public static class ConnectionPool {
   private static readonly int maxPool = 5;
   private static readonly SemaphoreSlim queue = new(maxPool, maxPool);
   private static readonly ConcurrentStack<OdbcConnection> pool = new();
-  private static readonly string connectionString = Config.Postgres.ConnectionString();
+  private static readonly string connectionString = PostgresConfig.ConnectionString();
 
   public static async Task<Pooled> GetConnectionAsync() {
     await queue.WaitAsync();
