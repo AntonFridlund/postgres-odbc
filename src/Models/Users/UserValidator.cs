@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Models.Users;
 
 // Validates attributes and values
-public static class UserValidation {
+public static class UserValidator {
   public static string? Validate(UserModel user) {
     var results = new List<ValidationResult>();
     var context = new ValidationContext(user);
@@ -17,7 +17,7 @@ public static class UserValidation {
     if (!user.LastName!.All(c => char.IsLetter(c) || c is ' ' or '-' or '\'')) {
       return "Last name can only contain unicode letters";
     }
-    if (!user.Username!.All(c => c is >= 'a' and <= 'z' or >= '0' and <= '9' or '_')) {
+    if (!user.Username!.All(c => c is (>= 'a' and <= 'z') or (>= '0' and <= '9') or '_')) {
       return "Username can only contain a-z, 0-9 and underscores";
     }
     return null;
