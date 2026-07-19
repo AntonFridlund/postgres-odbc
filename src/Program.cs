@@ -1,10 +1,12 @@
 using Middlewares.Logging;
+using Config.Password;
 using System.Net;
 using Routes;
 
 // Environment variables
 var host = Environment.GetEnvironmentVariable("APP_HOST") ?? "0.0.0.0";
 var port = Environment.GetEnvironmentVariable("APP_PORT") ?? "8080";
+ArgumentException.ThrowIfNullOrWhiteSpace(PasswordConfig.Pepper);
 
 // Create new application
 var builder = WebApplication.CreateEmptyBuilder(new() { Args = args });
@@ -12,13 +14,15 @@ var builder = WebApplication.CreateEmptyBuilder(new() { Args = args });
 // Configure application server
 builder.WebHost.UseKestrel(options => {
   options.AddServerHeader = false;
-  options.Limits.MaxRequestBodySize = 2 * 1024 * 1024;
-  options.Limits.MaxRequestHeadersTotalSize = 64 * 1024;
-  options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(6);
-  options.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(60);
+  options.Limits.MaxRequestLineSize = 4 * 1024;
+  options.Limits.MaxRequestBodySize = 1 * 1024 * 1024;
+  options.Limits.MaxRequestHeadersTotalSize = 16 * 1024;
+  options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(4);
+  options.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(30);
   options.Listen(IPAddress.Parse(host), int.Parse(port));
 });
 
+// Add endpoint routing
 builder.Services.AddRouting();
 
 // Start background logger

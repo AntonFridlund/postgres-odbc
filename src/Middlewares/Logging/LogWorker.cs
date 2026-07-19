@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Middlewares.Logging;
 
-// Creates and queues log entries from incoming requests
+// Creates and queues log entries
 public class LogWorker(RequestDelegate next) {
   public async Task InvokeAsync(HttpContext context) {
     var timestamp = DateTimeOffset.UtcNow;
@@ -18,14 +18,15 @@ public class LogWorker(RequestDelegate next) {
       stackTrace = exception.StackTrace;
       context.Response.StatusCode = 500;
       await context.Response.WriteAsJsonAsync(new { Error = "Internal Server Error" });
+    } finally {
+      timer.Stop();
     }
-    timer.Stop();
     await LogQueue<LogEntry>.Writer.WriteAsync(
       new LogEntry(
         Timestamp: timestamp,
         LogLevel: logLevel.ToString(),
         Method: context.Request.Method,
-        Path: context.Request.Path.ToString(),
+        Path: context.Request.Path,
         Status: context.Response.StatusCode,
         Duration: timer.Elapsed.TotalMilliseconds,
         Error: errorMessage,

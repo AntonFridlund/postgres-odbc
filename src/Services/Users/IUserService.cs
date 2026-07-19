@@ -6,4 +6,5 @@ namespace Services.Users;
 public interface IUserService {
   Task<UserDto?> GetUserByIdAsync(long id);
   Task<long?> CreateUserAsync(UserModel userModel);
+  Task<long?> DeleteUserAsync(long id);
 }
