@@ -10,8 +10,10 @@ public class UserRouter {
 
   public void Register(RouteGroupBuilder group) {
     var usersGroup = group.MapGroup("/users");
-    usersGroup.MapGet("/{id:long}", userController.GetUserById);
     usersGroup.MapPost("/", userController.CreateUser);
+    usersGroup.MapGet("/{id:long}", userController.GetUserById);
+    usersGroup.MapGet("/{username}", userController.GetUserByUsername);
+    usersGroup.MapPut("/{id:long}", userController.UpdateUser);
     usersGroup.MapDelete("/{id:long}", userController.DeleteUser);
   }
 }
