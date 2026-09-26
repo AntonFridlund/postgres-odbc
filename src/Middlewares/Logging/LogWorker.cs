@@ -16,8 +16,11 @@ public class LogWorker(RequestDelegate next) {
       logLevel = LogLevel.Error;
       errorMessage = exception.Message;
       stackTrace = exception.StackTrace;
-      context.Response.StatusCode = 500;
-      await context.Response.WriteAsJsonAsync(new { Error = "Internal Server Error" });
+      if (!context.Response.HasStarted) {
+        context.Response.Clear();
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsJsonAsync(new { Error = "Internal Server Error" });
+      }
     } finally {
       timer.Stop();
     }
