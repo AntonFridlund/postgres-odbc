@@ -1,12 +1,10 @@
 using Middlewares.Logging;
-using Config.Password;
 using System.Net;
 using Routes;
 
 // Environment variables
 var host = Environment.GetEnvironmentVariable("APP_HOST") ?? "0.0.0.0";
 var port = Environment.GetEnvironmentVariable("APP_PORT") ?? "8080";
-ArgumentException.ThrowIfNullOrWhiteSpace(PasswordConfig.Pepper);
 
 // Create new application
 var builder = WebApplication.CreateEmptyBuilder(new() { Args = args });

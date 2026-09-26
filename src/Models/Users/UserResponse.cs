@@ -1,7 +1,7 @@
 namespace Models.Users;
 
 // Represents outgoing user data
-public record UserDto(
+public record UserResponse(
   long Id,
   string? FirstName,
   string? LastName,
