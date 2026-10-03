@@ -15,7 +15,7 @@ builder.WebHost.UseKestrel(options => {
   options.Limits.MaxRequestLineSize = 4 * 1024;
   options.Limits.MaxRequestBodySize = 1 * 1024 * 1024;
   options.Limits.MaxRequestHeadersTotalSize = 16 * 1024;
-  options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(4);
+  options.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(10);
   options.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(30);
   options.Listen(IPAddress.Parse(host), int.Parse(port));
 });
@@ -34,7 +34,7 @@ app.UseMiddleware<LogWorker>();
 new MainRouter().Register(app);
 
 // Configure graceful shutdown
-app.Lifetime.ApplicationStopping.Register(() => {
+app.Lifetime.ApplicationStopped.Register(() => {
   LogQueue<LogEntry>.Writer.TryComplete();
 });
 

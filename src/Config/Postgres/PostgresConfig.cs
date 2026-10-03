@@ -4,12 +4,11 @@ namespace Config.Postgres;
 
 // Postgres connection configuration
 public static class PostgresConfig {
-    public static readonly string ConnectionString = new OdbcConnectionStringBuilder {
-        ["Driver"] = "PostgreSQL Unicode",
-        ["Port"] = Environment.GetEnvironmentVariable("PG_PORT") ?? "5432",
-        ["Server"] = Environment.GetEnvironmentVariable("PG_HOST") ?? "pgdb",
-        ["Database"] = Environment.GetEnvironmentVariable("PG_DATABASE") ?? "postgres",
-        ["Username"] = Environment.GetEnvironmentVariable("PG_USERNAME") ?? "liquibase",
-        ["Password"] = Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "liquibase"
-    }.ConnectionString;
+  public static readonly string ConnectionString = new OdbcConnectionStringBuilder {
+    ["Driver"] = Environment.GetEnvironmentVariable("DB_DRIVER"),
+    ["Server"] = Environment.GetEnvironmentVariable("DB_SERVER"),
+    ["Database"] = Environment.GetEnvironmentVariable("DB_DATABASE"),
+    ["Username"] = Environment.GetEnvironmentVariable("DB_USERNAME"),
+    ["Password"] = Environment.GetEnvironmentVariable("DB_PASSWORD")
+  }.ConnectionString;
 }

@@ -3,7 +3,7 @@ using System.Data.Common;
 namespace Persistence.Odbc;
 
 // Database response reader
-public sealed class ResponseReader(DbDataReader reader) {
+public sealed class OdbcResponseReader(DbDataReader reader) {
   public T Required<T>(int ordinal) {
     if (reader.IsDBNull(ordinal)) {
       var error = $"Column {ordinal} is required but got null";
