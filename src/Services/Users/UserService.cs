@@ -7,8 +7,7 @@ namespace Services.Users;
 
 // User related data source communication
 public sealed class UserService : IUserService {
-  private static readonly ConnectionPool pool = ConnectionPool.GetOrAdd(PostgresConfig.ConnectionString);
-  private readonly ConnectionRetry retry = new(pool);
+  private readonly OdbcConnectionRetry retry = new(PostgresConfig.ConnectionString);
 
   public Task<long?> CreateUserAsync(UserRequest user) {
     return retry.ExecuteAsync<long?>(async connection => {
@@ -33,7 +32,7 @@ public sealed class UserService : IUserService {
       cmd.Parameters.Add(new() { OdbcType = OdbcType.BigInt, Value = id });
       await using var reader = await cmd.ExecuteReaderAsync();
       if (!await reader.ReadAsync()) return null;
-      var row = new ResponseReader(reader);
+      var row = new OdbcResponseReader(reader);
       return new UserResponse(
         Id: row.Required<long>(reader.GetOrdinal("id")),
         FirstName: row.Nullable<string?>(reader.GetOrdinal("first_name")),
@@ -50,7 +49,7 @@ public sealed class UserService : IUserService {
       cmd.Parameters.Add(new() { OdbcType = OdbcType.VarChar, Value = username });
       await using var reader = await cmd.ExecuteReaderAsync();
       if (!await reader.ReadAsync()) return null;
-      var row = new ResponseReader(reader);
+      var row = new OdbcResponseReader(reader);
       return new UserResponse(
         Id: row.Required<long>(reader.GetOrdinal("id")),
         FirstName: row.Nullable<string?>(reader.GetOrdinal("first_name")),
